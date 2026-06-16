@@ -20,3 +20,6 @@ tmp/
 
 # Nested repos should not be vendored accidentally
 .git/
+
+# Runtime errors
+*.err
