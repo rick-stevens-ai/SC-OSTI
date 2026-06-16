@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# macOS / editors
+.DS_Store
+.AppleDouble
+.LSOverride
+*~
+
+# Runtime/log/temp artifacts
+*.log
+*.tmp
+.tmp/
+tmp/
+
+# Nested repos should not be vendored accidentally
+.git/
