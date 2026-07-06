@@ -24,8 +24,8 @@ import sqlite3, os, sys, argparse, time, hashlib, urllib.request, urllib.error, 
 from pathlib import Path
 from datetime import datetime, timezone
 
-DB = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
-PDFS_ROOT = Path("/Volumes/Cherry6TB/osti_corpus/pdfs")
+DB = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
+PDFS_ROOT = Path("/Volumes/SG-1-8TB/osti/pdfs")
 UNPAYWALL_EMAIL = "rick.stevens.ai@gmail.com"
 UA = "Mozilla/5.0 (Kukla agent / osti-doi-recovery; rick.stevens.ai@gmail.com)"
 TIMEOUT = 45

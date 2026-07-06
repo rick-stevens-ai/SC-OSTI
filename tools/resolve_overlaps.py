@@ -28,7 +28,7 @@ from datetime import datetime
 from pathlib import Path
 from difflib import SequenceMatcher
 
-CATALOG = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
+CATALOG = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
 SOURCE_PRIORITY = {"osti_fulltext": 1, "osti_fulltext_v2": 2, "osti_fulltext_unpay": 3}
 PDFTOTEXT = "/opt/homebrew/bin/pdftotext"
 TITLE_SAMPLE_BYTES = 4096  # first ~4KB of text usually has title

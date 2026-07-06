@@ -7,8 +7,8 @@ beyond the first one seen for a given (osti_id, source). Stage 4 will archive th
 import os, re, sqlite3, sys, time
 from pathlib import Path
 
-BASE = Path("/Volumes/Cherry6TB")
-AUDIT = BASE / "osti_corpus/_audit/inventory.sqlite"
+BASE = Path("/Volumes/SG-1-8TB/osti")
+AUDIT = BASE / "catalog/inventory.sqlite"
 
 ID_RE = re.compile(r"(\d+)\.pdf$", re.IGNORECASE)
 

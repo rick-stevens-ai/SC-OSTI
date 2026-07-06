@@ -8,8 +8,8 @@ import sqlite3, hashlib, sys
 from pathlib import Path
 from datetime import datetime, timezone
 
-DB = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
-PDFS = Path("/Volumes/Cherry6TB/osti_corpus/pdfs")
+DB = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
+PDFS = Path("/Volumes/SG-1-8TB/osti/pdfs")
 
 def sha256_of(p):
     h = hashlib.sha256()

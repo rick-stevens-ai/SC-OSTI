@@ -3,7 +3,7 @@
 Build canonical pdfs/<year>/<id>.pdf layout via hardlinks.
 
 For each is_canonical=1 file_instance whose paper has a known year:
-  target = /Volumes/Cherry6TB/osti_corpus/pdfs/<year>/<osti_id>.pdf
+  target = /Volumes/SG-1-8TB/osti/pdfs/<year>/<osti_id>.pdf
   if target doesn't exist: os.link(source_path, target)
   if target exists and is hardlink-identical to source: skip (idempotent)
   if target exists but different inode: log conflict, leave alone
@@ -20,8 +20,8 @@ import argparse, os, sqlite3, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 
-CATALOG = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
-PDFS_ROOT = Path("/Volumes/Cherry6TB/osti_corpus/pdfs")
+CATALOG = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
+PDFS_ROOT = Path("/Volumes/SG-1-8TB/osti/pdfs")
 
 def init_log_table(con):
     con.executescript("""

@@ -23,3 +23,6 @@ tmp/
 
 # Runtime errors
 *.err
+
+# cross-machine reconcile
+tools/_bak_*/

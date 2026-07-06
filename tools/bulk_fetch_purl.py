@@ -6,7 +6,7 @@ Args:
   --delay                   : seconds between requests (default 0.8)
   --workers                 : concurrent fetchers (default 1; raise carefully)
   --limit                   : cap to first N (smoke testing)
-  --target-dir              : where to write PDFs (default /Volumes/Cherry6TB/osti_corpus/pdfs)
+  --target-dir              : where to write PDFs (default /Volumes/SG-1-8TB/osti/pdfs)
 
 Writes:
   <target-dir>/<year>/<osti_id>.pdf
@@ -20,7 +20,7 @@ import sqlite3, os, sys, argparse, time, hashlib, urllib.request, urllib.error, 
 from pathlib import Path
 from datetime import datetime, timezone
 
-DB = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
+DB = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
 UA = "Mozilla/5.0 (Kukla agent / osti-corpus-backfill; rick.stevens.ai@gmail.com)"
 TIMEOUT = 60
 MAX_RETRY = 3
@@ -79,7 +79,7 @@ def main():
     ap.add_argument("--year-end", type=int, required=True)
     ap.add_argument("--delay", type=float, default=0.8)
     ap.add_argument("--limit", type=int, default=None)
-    ap.add_argument("--target-dir", default="/Volumes/Cherry6TB/osti_corpus/pdfs")
+    ap.add_argument("--target-dir", default="/Volumes/SG-1-8TB/osti/pdfs")
     ap.add_argument("--run-tag", default="backfill_v1")
     args = ap.parse_args()
 

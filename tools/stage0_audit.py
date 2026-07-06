@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Stage 0: Read-only inventory of all 4 Cherry6TB osti_* sources.
+Stage 0: Read-only inventory of all 4 SG-1-8TB osti_* sources (migrated from Cherry6TB).
 Builds: osti_corpus/_audit/inventory.sqlite with one row per (osti_id, source).
 Schema lets Stage 2 pick the canonical file per OSTI ID by priority.
 
@@ -12,8 +12,8 @@ Sources & how we infer year:
 import os, re, sqlite3, sys, time
 from pathlib import Path
 
-BASE = Path("/Volumes/Cherry6TB")
-AUDIT = BASE / "osti_corpus/_audit/inventory.sqlite"
+BASE = Path("/Volumes/SG-1-8TB/osti")
+AUDIT = BASE / "catalog/inventory.sqlite"
 UNPAY_DB = BASE / "osti_fulltext_unpay/_state/unpaywall_overnight.db"
 
 # Source priority (lower wins for canonical pick): fulltext > v2 > unpay

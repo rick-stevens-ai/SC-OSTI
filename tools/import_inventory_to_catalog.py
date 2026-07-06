@@ -9,8 +9,8 @@ import sqlite3, os, sys
 from datetime import datetime
 from pathlib import Path
 
-AUDIT = "/Volumes/Cherry6TB/osti_corpus/_audit/inventory.sqlite"
-CATALOG = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
+AUDIT = "/Volumes/SG-1-8TB/osti/catalog/inventory.sqlite"
+CATALOG = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
 
 now = datetime.utcnow().isoformat() + "Z"
 

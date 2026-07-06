@@ -21,7 +21,7 @@ import argparse, json, sqlite3, sys, time, urllib.request, urllib.error
 from datetime import datetime, timedelta
 from pathlib import Path
 
-CATALOG = Path("/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite")
+CATALOG = Path("/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite")
 API = "https://www.osti.gov/api/v1/records"
 UA = "Mozilla/5.0 (Kukla agent / osti-corpus-consolidation; rick.stevens.ai@gmail.com)"
 TIMEOUT = 60
@@ -190,16 +190,35 @@ def pull_lab_year(conn, lab, year, source_tag):
     lab_q = lab.replace(" ", "+")
     start_date = f"01/01/{year}"
     end_date = f"12/31/{year}"
+    return _pull_lab_range(conn, lab, lab_q,
+                           f"publication_date_start={start_date}&publication_date_end={end_date}",
+                           source_tag, label=f"{lab} {year}")
+
+
+def pull_lab_since(conn, lab, since_days, source_tag):
+    """Incremental: pull records ENTERED in the last `since_days` days for this lab.
+    Uses entry_date_start so it catches new deposits AND metadata updates to existing
+    records. Returns (added, updated, status)."""
+    lab_q = lab.replace(" ", "+")
+    start = (datetime.utcnow() - timedelta(days=since_days)).strftime("%m/%d/%Y")
+    end = datetime.utcnow().strftime("%m/%d/%Y")
+    return _pull_lab_range(conn, lab, lab_q,
+                           f"entry_date_start={start}&entry_date_end={end}",
+                           source_tag, label=f"{lab} since {start}")
+
+
+def _pull_lab_range(conn, lab, lab_q, date_clause, source_tag, label):
+    """Shared paginated pull for a lab + a date-filter clause."""
     added = 0
     updated = 0
     page = 1
     total = None
     while True:
-        url = f"{API}?research_org={lab_q}&publication_date_start={start_date}&publication_date_end={end_date}&rows={ROWS}&page={page}"
+        url = f"{API}?research_org={lab_q}&{date_clause}&rows={ROWS}&page={page}"
         try:
             body, t = fetch_page(url)
         except Exception as e:
-            print(f"  ERROR {lab} {year} page {page}: {e}", flush=True)
+            print(f"  ERROR {label} page {page}: {e}", flush=True)
             return added, updated, "error"
         if total is None:
             total = t
@@ -227,7 +246,10 @@ def main():
     ap.add_argument("--run-type", type=str, default="initial_catalog")
     args = ap.parse_args()
 
-    conn = sqlite3.connect(CATALOG)
+    conn = sqlite3.connect(CATALOG, timeout=120, isolation_level=None)
+    conn.execute("PRAGMA busy_timeout=120000")
+    if conn.execute("PRAGMA journal_mode").fetchone()[0].lower() != "wal":
+        conn.execute("PRAGMA journal_mode=WAL")
     started = datetime.utcnow().isoformat() + "Z"
     cur = conn.cursor()
     cur.execute("""INSERT INTO refresh_runs
@@ -245,11 +267,13 @@ def main():
     total_updated = 0
     total_errors = 0
     t0 = time.time()
-    for lab in labs:
-        for year in range(args.year_start, args.year_end + 1):
+    if args.since_days:
+        # Incremental mode: one entry_date-windowed pull per lab (all years at once).
+        for lab in labs:
             t_ly = time.time()
-            print(f"\n[{lab} {year}]", flush=True)
-            added, updated, status = pull_lab_year(conn, lab, year, source_tag=f"osti_api_bulk_run{run_id}")
+            print(f"\n[{lab} since {args.since_days}d]", flush=True)
+            added, updated, status = pull_lab_since(conn, lab, args.since_days,
+                                                    source_tag=f"osti_api_incr_run{run_id}")
             if status == "error":
                 total_errors += 1
             total_added += added
@@ -257,6 +281,19 @@ def main():
             print(f"  +{added} new, ~{updated} updated, ({time.time()-t_ly:.1f}s) "
                   f"running total: {total_added}+/{total_updated}~ in {(time.time()-t0)/60:.1f}min", flush=True)
             time.sleep(DELAY)
+    else:
+        for lab in labs:
+            for year in range(args.year_start, args.year_end + 1):
+                t_ly = time.time()
+                print(f"\n[{lab} {year}]", flush=True)
+                added, updated, status = pull_lab_year(conn, lab, year, source_tag=f"osti_api_bulk_run{run_id}")
+                if status == "error":
+                    total_errors += 1
+                total_added += added
+                total_updated += updated
+                print(f"  +{added} new, ~{updated} updated, ({time.time()-t_ly:.1f}s) "
+                      f"running total: {total_added}+/{total_updated}~ in {(time.time()-t0)/60:.1f}min", flush=True)
+                time.sleep(DELAY)
 
     ended = datetime.utcnow().isoformat() + "Z"
     cur.execute("""UPDATE refresh_runs SET ended_ts=?, records_added=?, records_updated=?, errors=? WHERE run_id=?""",

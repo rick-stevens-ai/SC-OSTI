@@ -10,7 +10,7 @@ Resumable: skips IDs already populated.
 import json, sqlite3, sys, time, urllib.request, urllib.error
 from pathlib import Path
 
-AUDIT = Path("/Volumes/Cherry6TB/osti_corpus/_audit/inventory.sqlite")
+AUDIT = Path("/Volumes/SG-1-8TB/osti/catalog/inventory.sqlite")
 API = "https://www.osti.gov/api/v1/records/"
 TIMEOUT = 30
 DELAY = 0.3      # ~2 req/s effective (verified clean in 30-id smoke at 0.5s)

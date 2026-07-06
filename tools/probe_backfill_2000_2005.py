@@ -19,8 +19,8 @@ import sqlite3, json, os, random, time, urllib.request, urllib.error, ssl
 from pathlib import Path
 from datetime import datetime, timezone
 
-DB = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
-OUT_DIR = Path(f"/Volumes/Cherry6TB/osti_corpus/probes/backfill_2000-2005_{datetime.now().strftime('%Y%m%d-%H%M')}")
+DB = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
+OUT_DIR = Path(f"/Volumes/SG-1-8TB/osti/logs/probes/backfill_2000-2005_{datetime.now().strftime('%Y%m%d-%H%M')}")
 PER_YEAR = 50
 YEARS = list(range(2000, 2006))
 DELAY = 1.0  # gentle

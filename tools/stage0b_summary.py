@@ -3,7 +3,7 @@
 import sqlite3
 from pathlib import Path
 
-AUDIT = Path("/Volumes/Cherry6TB/osti_corpus/_audit/inventory.sqlite")
+AUDIT = Path("/Volumes/SG-1-8TB/osti/catalog/inventory.sqlite")
 conn = sqlite3.connect(AUDIT)
 
 print("=== Total rows ===")

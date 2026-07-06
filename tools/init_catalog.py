@@ -6,7 +6,7 @@ Idempotent: safe to run repeatedly.
 import sqlite3
 from pathlib import Path
 
-CATALOG = Path("/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite")
+CATALOG = Path("/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite")
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS papers (

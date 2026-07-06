@@ -7,7 +7,7 @@ Also logs a refresh_runs row marking the cleanup pass.
 import sqlite3, json, sys
 from datetime import datetime, timezone
 
-DB = "/Volumes/Cherry6TB/osti_corpus/_state/catalog.sqlite"
+DB = "/Volumes/SG-1-8TB/osti/catalog/catalog.sqlite"
 RUN_TAG = "exclude_datasets_v1"
 
 def main():
